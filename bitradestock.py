@@ -1240,6 +1240,8 @@ async def post_init(application):
 # app = ApplicationBuilder().token("8297899430:AAFj5L57eegAl0QqUPz5868vPlP_D5mtoB4").post_init(post_init).build()
 TOKEN = os.getenv("BOT_TOKEN")
 
+print(f"TOKEN loaded: {'OK' if TOKEN else 'NONE - THIẾU ENV VAR!'}")
+
 app = ApplicationBuilder().token(TOKEN).post_init(post_init).build()
 
 app.add_handler(CommandHandler("hello", hello))
@@ -1269,6 +1271,16 @@ def run_web():
 # if __name__ == '__main__':
 #     app.run_polling()
 
+# if __name__ == '__main__':
+#     Thread(target=run_web).start()
+#     app.run_polling()
+
 if __name__ == '__main__':
     Thread(target=run_web).start()
-    app.run_polling()
+    try:
+        print("🤖 Đang khởi động Telegram bot...")
+        app.run_polling()
+    except Exception as e:
+        import traceback
+        print(f"❌ Bot crash: {e}")
+        traceback.print_exc()
