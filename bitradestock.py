@@ -1275,12 +1275,20 @@ def run_web():
 #     Thread(target=run_web).start()
 #     app.run_polling()
 
+
 if __name__ == '__main__':
-    Thread(target=run_web).start()
+    import asyncio
+
+    # Fix cho Python 3.10+ / 3.14: tạo event loop thủ công
+    asyncio.set_event_loop(asyncio.new_event_loop())
+
+    Thread(target=run_web, daemon=True).start()
+
     try:
         print("🤖 Đang khởi động Telegram bot...")
         app.run_polling()
     except Exception as e:
         import traceback
+
         print(f"❌ Bot crash: {e}")
         traceback.print_exc()
